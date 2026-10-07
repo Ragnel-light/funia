@@ -1,0 +1,353 @@
+
+/* ========================================
+   FUNIA REGISTER
+======================================== */
+
+.register-page {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(91, 92, 240, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(219, 92, 155, 0.10),
+      transparent 28%
+    ),
+    #f7f8fc;
+
+  color: #202124;
+}
+
+
+/* ========================================
+   CARD
+======================================== */
+
+.register-card {
+  width: min(680px, 100%);
+
+  padding: 42px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid #e5e8ef;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.08);
+
+  animation: registerAppear 0.45s ease both;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.register-header {
+  text-align: center;
+
+  margin-bottom: 30px;
+}
+
+
+.register-icon {
+  width: 68px;
+  height: 68px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b5cf0,
+      #7c5cff,
+      #db5c9b
+    );
+
+  font-size: 31px;
+
+  box-shadow:
+    0 12px 28px rgba(91, 92, 240, 0.18);
+}
+
+
+.register-card h1 {
+  margin: 0;
+
+  font-size: clamp(28px, 5vw, 38px);
+
+  line-height: 1.1;
+
+  letter-spacing: -1.4px;
+}
+
+
+.subtitle {
+  margin: 11px auto 0;
+
+  max-width: 500px;
+
+  color: #7a8393;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   FORM
+======================================== */
+
+.register-card form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* ========================================
+   SECTION
+======================================== */
+
+.form-section {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 11px;
+
+  margin-top: 8px;
+
+  padding: 20px;
+
+  border: 1px solid #edf0f5;
+
+  border-radius: 18px;
+
+  background: #fafbfe;
+}
+
+
+.form-section h3 {
+  margin: 0 0 2px;
+
+  color: #3b4250;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+
+/* ========================================
+   INPUTS / SELECT
+======================================== */
+
+.register-card input,
+.register-card select {
+  width: 100%;
+
+  min-height: 48px;
+
+  padding: 13px 14px;
+
+  border: 1px solid #dfe3eb;
+
+  border-radius: 13px;
+
+  outline: none;
+
+  background: white;
+
+  color: #202124;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.register-card input::placeholder {
+  color: #9aa2b1;
+}
+
+
+.register-card input:focus,
+.register-card select:focus {
+  border-color: #7374f4;
+
+  box-shadow:
+    0 0 0 4px rgba(91, 92, 240, 0.09);
+}
+
+
+/* ========================================
+   SELECT
+======================================== */
+
+.register-card select {
+  cursor: pointer;
+
+  appearance: auto;
+}
+
+
+/* ========================================
+   LANGUAGE HELP
+======================================== */
+
+.language-help {
+  margin: 0;
+
+  color: #858d9c;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.register-card > form > button {
+  width: 100%;
+
+  min-height: 52px;
+
+  margin-top: 8px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #5b5cf0,
+      #7c5cff
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 24px rgba(91, 92, 240, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.register-card > form > button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 30px rgba(91, 92, 240, 0.22);
+}
+
+
+.register-card > form > button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.register-card > form > button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* ========================================
+   ANIMATION
+======================================== */
+
+@keyframes registerAppear {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 600px) {
+
+  .register-page {
+    padding: 20px 14px;
+  }
+
+
+  .register-card {
+    padding: 26px 18px;
+
+    border-radius: 22px;
+  }
+
+
+  .register-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 27px;
+  }
+
+
+  .form-section {
+    padding: 16px;
+  }
+
+}
+

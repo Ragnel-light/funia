@@ -1,0 +1,1173 @@
+/* =========================================================
+   FUNIA DASHBOARD
+   Compatible Light Mode + Dark Mode
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.dashboard {
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-soft: #f2f3f8;
+  --text: #202124;
+  --text-secondary: #6f7787;
+  --border: rgba(0, 0, 0, 0.06);
+  --primary: #5b5cf0;
+  --primary-soft: #eeedff;
+
+  min-height: 100vh;
+
+  background: var(--bg);
+
+  color: var(--text);
+
+  color-scheme: light;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.dashboard-navbar {
+  height: 72px;
+
+  padding: 0 5%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  border-bottom: 1px solid var(--border);
+
+  backdrop-filter: blur(18px);
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.dashboard-logo {
+  color: var(--primary);
+
+  font-size: 24px;
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.dashboard-logo:hover {
+  transform: scale(1.03);
+  opacity: 0.85;
+}
+
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.dashboard-nav {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.dashboard-nav button {
+  padding: 10px 14px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f3f4f8;
+
+  color: #454b57;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.dashboard-nav button:hover {
+  transform: translateY(-2px);
+
+  background: var(--primary-soft);
+
+  color: var(--primary);
+}
+
+
+/* =========================================================
+   USER INFO
+========================================================= */
+
+.user-info {
+  padding: 10px 14px;
+
+  border-radius: 12px;
+
+  background: var(--primary-soft);
+
+  color: var(--primary);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.dashboard-content {
+  width: min(1180px, 92%);
+
+  margin: auto;
+
+  padding: 46px 0 80px;
+}
+
+
+/* =========================================================
+   WELCOME - CLEAN
+========================================================= */
+
+.dashboard-welcome {
+  position: relative;
+
+  width: 100%;
+
+  margin: 0 0 25px;
+  padding: 42px 44px;
+
+  border: 0 !important;
+  outline: 0 !important;
+
+  border-radius: 28px;
+
+  background-color: #f1f3ff !important;
+  background-image:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(91, 92, 240, 0.10),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 75% 100%,
+      rgba(236, 72, 153, 0.06),
+      transparent 25%
+    ) !important;
+
+  color: #202124 !important;
+
+  box-shadow: none !important;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  color-scheme: light;
+
+  animation: dashboardEnter 0.55s ease both;
+}
+
+
+/* Empêche les pseudo-éléments de créer des bandes */
+
+.dashboard-welcome::before,
+.dashboard-welcome::after {
+  content: "";
+
+  position: absolute;
+
+  pointer-events: none;
+
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+
+/* Cercle 1 */
+
+.dashboard-welcome::before {
+  width: 240px;
+  height: 240px;
+
+  right: -100px;
+  top: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(91, 92, 240, 0.06);
+
+  z-index: 0;
+}
+
+
+/* Cercle 2 */
+
+.dashboard-welcome::after {
+  width: 170px;
+  height: 170px;
+
+  right: 120px;
+  bottom: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(236, 72, 153, 0.05);
+
+  z-index: 0;
+}
+
+
+/* Tout le contenu reste au-dessus */
+
+.dashboard-welcome > * {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* Label */
+
+.dashboard-label {
+  margin: 0 0 12px !important;
+
+  color: #6b6fd6 !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+/* Titre */
+
+.dashboard-welcome h1 {
+  margin: 0 !important;
+
+  color: #202124 !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+
+  font-size: clamp(36px, 5vw, 58px);
+
+  line-height: 1;
+
+  letter-spacing: -2.5px;
+
+  font-weight: 800;
+}
+
+
+/* Nom */
+
+.dashboard-welcome h1 span {
+  color: #5b5cf0 !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+
+  padding: 0 !important;
+}
+
+
+/* Description */
+
+.dashboard-welcome > p:last-child {
+  margin: 16px 0 0 !important;
+
+  color: #737b8c !important;
+
+  background: transparent !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+  .dashboard-welcome {
+    background-color: #252733 !important;
+
+    background-image:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(124, 92, 255, 0.15),
+        transparent 25%
+      ),
+      radial-gradient(
+        circle at 75% 100%,
+        rgba(236, 72, 153, 0.08),
+        transparent 25%
+      ) !important;
+
+    color: #f4f4f5 !important;
+
+    border: 0 !important;
+
+    outline: 0 !important;
+
+    box-shadow: none !important;
+  }
+
+
+  .dashboard-welcome h1 {
+    color: #f4f4f5 !important;
+  }
+
+
+  .dashboard-welcome h1 span {
+    color: #b2b4ff !important;
+  }
+
+
+  .dashboard-label {
+    color: #aaaaff !important;
+  }
+
+
+  .dashboard-welcome > p:last-child {
+    color: #aeb3c0 !important;
+  }
+
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes dashboardEnter {
+
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.dashboard-label {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0 0 12px;
+
+  color: #7073cf;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.dashboard-welcome h1 {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0;
+
+  font-size: clamp(36px, 5vw, 58px);
+
+  line-height: 1;
+
+  letter-spacing: -2.5px;
+
+  font-weight: 800;
+
+  color: #202124;
+}
+
+
+.dashboard-welcome h1 span {
+  color: #5b5cf0;
+
+  background: transparent;
+
+  padding: 0;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.dashboard-welcome > p:last-child {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 16px 0 0;
+
+  color: #737b8c;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   PLAYER STATS
+========================================================= */
+
+.player-stats {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+}
+
+
+.stat-card {
+  position: relative;
+
+  min-height: 140px;
+
+  padding: 22px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  overflow: hidden;
+
+  border: none;
+
+  border-radius: 21px;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  box-shadow:
+    0 7px 24px rgba(0, 0, 0, 0.045);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.stat-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.075);
+}
+
+
+.stat-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 95px;
+  height: 95px;
+
+  right: -32px;
+  top: -35px;
+
+  border-radius: 50%;
+
+  background: var(--primary-soft);
+}
+
+
+.stat-card > span {
+  position: relative;
+
+  z-index: 2;
+
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #f4f3ff;
+
+  font-size: 22px;
+}
+
+
+.stat-card small {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top: 5px;
+
+  color: #9098a7;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.stat-card strong {
+  position: relative;
+
+  z-index: 2;
+
+  color: var(--text);
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MAIN CARDS
+========================================================= */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+
+.dashboard-card {
+  position: relative;
+
+  min-height: 275px;
+
+  padding: 28px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  text-align: left;
+
+  overflow: hidden;
+
+  border: none;
+
+  border-radius: 25px;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  box-shadow:
+    0 7px 24px rgba(0, 0, 0, 0.045);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+
+.dashboard-card:hover {
+  transform: translateY(-7px);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+
+.dashboard-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  right: -90px;
+  top: -90px;
+
+  border-radius: 50%;
+
+  transition: transform 0.4s ease;
+}
+
+
+.dashboard-card:hover::after {
+  transform: scale(1.18);
+}
+
+
+/* =========================================================
+   CARD COLORS
+========================================================= */
+
+.dashboard-card.blue::after {
+  background: #eef0ff;
+}
+
+.dashboard-card.red::after {
+  background: #fff0f4;
+}
+
+.dashboard-card.green::after {
+  background: #edf9f2;
+}
+
+.dashboard-card.yellow::after {
+  background: #fff8e9;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.dashboard-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 24px;
+
+  border-radius: 18px;
+
+  font-size: 31px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+.dashboard-card.blue .dashboard-icon {
+  background: #eef0ff;
+}
+
+.dashboard-card.red .dashboard-icon {
+  background: #fff0f4;
+}
+
+.dashboard-card.green .dashboard-icon {
+  background: #edf9f2;
+}
+
+.dashboard-card.yellow .dashboard-icon {
+  background: #fff8e9;
+}
+
+
+.dashboard-card:hover .dashboard-icon {
+  transform:
+    translateY(-3px)
+    rotate(-3deg);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.dashboard-card h2 {
+  position: relative;
+
+  z-index: 2;
+
+  margin: 0 0 9px;
+
+  color: var(--text);
+
+  font-size: 26px;
+
+  letter-spacing: -0.8px;
+
+  font-weight: 800;
+}
+
+
+.dashboard-card p {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 470px;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+
+  line-height: 1.65;
+}
+
+
+.dashboard-card > span {
+  position: relative;
+
+  z-index: 2;
+
+  margin-top: auto;
+
+  padding-top: 25px;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease;
+}
+
+
+.dashboard-card:hover > span {
+  transform: translateX(5px);
+}
+
+
+.dashboard-card.blue > span {
+  color: #5b5cf0;
+}
+
+.dashboard-card.red > span {
+  color: #df5c79;
+}
+
+.dashboard-card.green > span {
+  color: #22995f;
+}
+
+.dashboard-card.yellow > span {
+  color: #bd891b;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes dashboardEnter {
+  from {
+    opacity: 0;
+
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   DARK MODE
+   Le navigateur peut être en dark mode, mais Funia
+   garde son propre rendu cohérent.
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+  .dashboard {
+    --bg: #111318;
+    --surface: #1b1d23;
+    --surface-soft: #22252d;
+    --text: #f3f4f6;
+    --text-secondary: #a4a9b5;
+    --border: rgba(255, 255, 255, 0.06);
+
+    background:
+      radial-gradient(
+        circle at 5% 5%,
+        rgba(91, 92, 240, 0.10),
+        transparent 25%
+      ),
+      #111318;
+
+    color: #f3f4f6;
+
+    color-scheme: dark;
+  }
+
+
+  .dashboard-navbar {
+    background: rgba(24, 26, 32, 0.92);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+
+  .dashboard-nav button {
+    background: #22252d;
+
+    color: #d8dbe2;
+  }
+
+
+  .dashboard-nav button:hover {
+    background: #2a2d38;
+
+    color: #aeb0ff;
+  }
+
+
+  .user-info {
+    background: rgba(91, 92, 240, 0.16);
+
+    color: #b6b7ff;
+  }
+
+
+  .dashboard-welcome {
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(124, 92, 255, 0.18),
+        transparent 25%
+      ),
+      linear-gradient(
+        135deg,
+        #232635,
+        #292638
+      );
+
+    color: #f4f5f7;
+
+    box-shadow:
+      0 14px 35px rgba(0, 0, 0, 0.22);
+
+    color-scheme: dark;
+  }
+
+
+  .dashboard-welcome h1 {
+    color: #f4f5f7;
+  }
+
+
+  .dashboard-welcome h1 span {
+    color: #aeb0ff;
+  }
+
+
+  .dashboard-label {
+    color: #afb1ff;
+  }
+
+
+  .dashboard-welcome > p:last-child {
+    color: #b0b5c2;
+  }
+
+
+  .stat-card {
+    background: var(--surface);
+
+    color: var(--text);
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.18);
+  }
+
+
+  .stat-card > span {
+    background: #262832;
+  }
+
+
+  .stat-card small {
+    color: #9ba1ae;
+  }
+
+
+  .stat-card strong {
+    color: #f4f5f7;
+  }
+
+
+  .stat-card::after {
+    background: rgba(91, 92, 240, 0.10);
+  }
+
+
+  .dashboard-card {
+    background: var(--surface);
+
+    color: var(--text);
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.18);
+  }
+
+
+  .dashboard-card h2 {
+    color: #f4f5f7;
+  }
+
+
+  .dashboard-card p {
+    color: #a5aab6;
+  }
+
+
+  .dashboard-card.blue::after {
+    background: rgba(91, 92, 240, 0.10);
+  }
+
+  .dashboard-card.red::after {
+    background: rgba(223, 92, 121, 0.10);
+  }
+
+  .dashboard-card.green::after {
+    background: rgba(34, 153, 95, 0.10);
+  }
+
+  .dashboard-card.yellow::after {
+    background: rgba(189, 137, 27, 0.10);
+  }
+
+
+  .dashboard-card.blue .dashboard-icon {
+    background: rgba(91, 92, 240, 0.13);
+  }
+
+  .dashboard-card.red .dashboard-icon {
+    background: rgba(223, 92, 121, 0.13);
+  }
+
+  .dashboard-card.green .dashboard-icon {
+    background: rgba(34, 153, 95, 0.13);
+  }
+
+  .dashboard-card.yellow .dashboard-icon {
+    background: rgba(189, 137, 27, 0.13);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .dashboard-navbar {
+    padding: 0 20px;
+  }
+
+  .dashboard-nav button {
+    display: none;
+  }
+
+  .player-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-welcome {
+    padding: 36px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard-navbar {
+    height: 66px;
+
+    padding: 0 15px;
+  }
+
+
+  .dashboard-logo {
+    font-size: 20px;
+  }
+
+
+  .dashboard-content {
+    width: 94%;
+
+    padding: 25px 0 50px;
+  }
+
+
+  .dashboard-welcome {
+    padding: 30px 24px;
+
+    border-radius: 23px;
+  }
+
+
+  .dashboard-welcome h1 {
+    font-size: 34px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  .dashboard-welcome h1 span {
+    display: inline-block;
+
+    margin-top: 5px;
+  }
+
+
+  .player-stats {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .stat-card {
+    min-height: 115px;
+  }
+
+
+  .dashboard-grid {
+    gap: 14px;
+  }
+
+
+  .dashboard-card {
+    min-height: 245px;
+
+    padding: 24px;
+  }
+
+
+  .dashboard-card h2 {
+    font-size: 24px;
+  }
+
+}
+.dashboard-card.ai {
+  background: linear-gradient(
+    135deg,
+    #eef0ff,
+    #f7efff
+  );
+
+  border: 1px solid #d9d8ff;
+}
+
+.dashboard-card.ai:hover {
+  border-color: #7c5cff;
+
+  box-shadow:
+    0 16px 35px rgba(91, 92, 240, 0.15);
+}
+
+.dashboard-card.ai .dashboard-icon {
+  background: linear-gradient(
+    135deg,
+    #5b5cf0,
+    #7c5cff
+  );
+
+  color: white;
+}
