@@ -12,7 +12,7 @@ function Challenges({ onBack }) {
 
     if (!userId) return
 
-    fetch(`http://127.0.0.1:8000/users/${userId}`)
+    fetch(`https://funia.onrender.com/users/${userId}`)
       .then(res => {
 
         if (!res.ok) {
@@ -107,7 +107,7 @@ function Challenges({ onBack }) {
     try {
 
       const response = await fetch(
-        `http://127.0.0.1:8000/users/${userId}/add-xp?xp=${challenge.reward}`,
+        `https://funia.onrender.com/users/${userId}/add-xp?xp=${challenge.reward}`,
         {
           method: "POST"
         }

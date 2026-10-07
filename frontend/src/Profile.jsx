@@ -18,7 +18,7 @@ function Profile({ onBack }) {
     try {
       setLoading(true)
 
-      const res = await fetch(`http://127.0.0.1:8000/users/${userId}`)
+      const res = await fetch(`https://funia.onrender.com/users/${userId}`)
 
       if (!res.ok) {
         throw new Error(`Erreur serveur : ${res.status}`)

@@ -137,7 +137,7 @@ function MemoryGame({ onBack }) {
     async function saveGameResult() {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/users/${userId}/game-result?xp=${score}`,
+          `https://funia.onrender.com/users/${userId}/game-result?xp=${score}`,
           {
             method: "POST"
           }

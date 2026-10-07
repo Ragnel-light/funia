@@ -258,7 +258,7 @@ function Register({ onRegister }) {
 
       const response =
         await fetch(
-          `http://127.0.0.1:8000/register?${params.toString()}`,
+          `https://funia.onrender.com/register?${params.toString()}`,
           {
             method: "POST",
 

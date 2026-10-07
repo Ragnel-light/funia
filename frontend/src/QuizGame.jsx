@@ -125,7 +125,7 @@ function QuizGame({
 
       const response =
         await fetch(
-          `http://127.0.0.1:8000/trivia/questions?${params.toString()}`
+          `https://funia.onrender.com/trivia/questions?${params.toString()}`
         )
 
 
@@ -221,7 +221,7 @@ function QuizGame({
 
       const response =
         await fetch(
-          "http://127.0.0.1:8000/ai/hint",
+          "https://funia.onrender.com/ai/hint",
           {
 
             method: "POST",
@@ -359,7 +359,7 @@ function QuizGame({
 
       const response =
         await fetch(
-          `http://127.0.0.1:8000/users/${userId}/quiz-result?score=${finalScore}&xp=${xpEarned}`,
+          `https://funia.onrender.com/users/${userId}/quiz-result?score=${finalScore}&xp=${xpEarned}`,
           {
             method:
               "POST"

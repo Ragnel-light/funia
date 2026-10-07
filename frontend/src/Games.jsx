@@ -17,7 +17,7 @@ function Games({ onBack }) {
 
     if (!userId) return
 
-    fetch(`http://127.0.0.1:8000/users/${userId}`)
+    fetch(`https://funia.onrender.com/users/${userId}`)
       .then(res => {
         if (!res.ok) {
           throw new Error("Impossible de récupérer le profil")
@@ -46,7 +46,7 @@ function Games({ onBack }) {
     try {
 
       const response = await fetch(
-        `http://127.0.0.1:8000/users/${userId}/game-result?xp=${amount}`,
+        `https://funia.onrender.com/users/${userId}/game-result?xp=${amount}`,
         {
           method: "POST"
         }

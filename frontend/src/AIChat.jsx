@@ -57,7 +57,7 @@ function AIChat({ onBack }) {
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:8000/ai/chat",
+        "https://funia.onrender.com/ai/chat",
         {
           method: "POST",
 

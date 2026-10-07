@@ -29,7 +29,7 @@ function Dashboard({
       return
     }
 
-    fetch(`http://127.0.0.1:8000/users/${userId}`)
+    fetch(`https://funia.onrender.com/users/${userId}`)
       .then(response => {
 
         if (!response.ok) {
