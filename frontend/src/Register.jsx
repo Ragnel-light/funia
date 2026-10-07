@@ -43,12 +43,52 @@ function Register({ onRegister, onBack }) {
   const [success, setSuccess] = useState("")
 
   function handleChange(e) {
+    const { name, value } = e.target
 
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    })
+    setForm((previous) => ({
+      ...previous,
+      [name]: value
+    }))
 
+    setError("")
+    setSuccess("")
+  }
+
+  function getErrorMessage(data) {
+
+    if (Array.isArray(data?.detail)) {
+
+      return data.detail
+        .map((err) => {
+
+          const field =
+            Array.isArray(err.loc)
+              ? err.loc[err.loc.length - 1]
+              : "champ"
+
+          const fieldNames = {
+            username: "Nom d'utilisateur",
+            email: "Email",
+            password: "Mot de passe",
+            age: "Âge",
+            country: "Pays",
+            region: "Région",
+            level: "Niveau"
+          }
+
+          const readableField =
+            fieldNames[field] || field
+
+          return `${readableField}: ${err.msg}`
+        })
+        .join("\n")
+    }
+
+    if (typeof data?.detail === "string") {
+      return data.detail
+    }
+
+    return "Impossible de créer le compte."
   }
 
   async function handleSubmit(e) {
@@ -58,23 +98,34 @@ function Register({ onRegister, onBack }) {
     setError("")
     setSuccess("")
 
-    if (form.password !== form.confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.")
+    const username = form.username.trim()
+    const email = form.email.trim()
+    const region = form.region.trim()
+    const level = form.level.trim()
+
+    if (username.length < 3) {
+      setError(
+        "Le nom d'utilisateur doit contenir au moins 3 caractères."
+      )
       return
     }
 
     if (form.password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères.")
+      setError(
+        "Le mot de passe doit contenir au moins 6 caractères."
+      )
       return
     }
 
-    if (!form.username.trim()) {
-      setError("Entre un nom d'utilisateur.")
+    if (form.password !== form.confirmPassword) {
+      setError(
+        "Les mots de passe ne correspondent pas."
+      )
       return
     }
 
-    if (!form.email.trim()) {
-      setError("Entre ton email.")
+    if (!email) {
+      setError("Entre ton adresse email.")
       return
     }
 
@@ -91,6 +142,15 @@ function Register({ onRegister, onBack }) {
     setLoading(true)
 
     try {
+      console.log("DONNÉES ENVOYÉES :", {
+  username,
+  email,
+  password: form.password,
+  age: Number(form.age),
+  country: form.country,
+  region,
+  level
+})
 
       const response = await fetch(
         "https://funia.onrender.com/register",
@@ -103,15 +163,13 @@ function Register({ onRegister, onBack }) {
           },
 
           body: JSON.stringify({
-            username: form.username.trim(),
-            email: form.email.trim(),
+            username,
+            email,
             password: form.password,
-
             age: Number(form.age),
-
             country: form.country,
-            region: form.region.trim(),
-            level: form.level.trim()
+            region,
+            level
           })
         }
       )
@@ -119,12 +177,15 @@ function Register({ onRegister, onBack }) {
       const data = await response.json()
 
       if (!response.ok) {
+        throw new Error(getErrorMessage(data))
+      }
+
+      if (!data.access_token) {
         throw new Error(
-          data.detail || "Impossible de créer le compte."
+          "Le serveur n'a pas retourné de token de connexion."
         )
       }
 
-      // Token JWT
       localStorage.setItem(
         "access_token",
         data.access_token
@@ -137,7 +198,12 @@ function Register({ onRegister, onBack }) {
 
       localStorage.setItem(
         "username",
-        data.username
+        data.username || username
+      )
+
+      localStorage.setItem(
+        "email",
+        email
       )
 
       localStorage.setItem(
@@ -152,12 +218,12 @@ function Register({ onRegister, onBack }) {
 
       localStorage.setItem(
         "region",
-        form.region
+        region
       )
 
       localStorage.setItem(
         "level",
-        form.level
+        level
       )
 
       localStorage.setItem(
@@ -165,7 +231,9 @@ function Register({ onRegister, onBack }) {
         String(form.age)
       )
 
-      setSuccess("Compte créé avec succès ! 🎉")
+      setSuccess(
+        "Compte créé avec succès ! 🎉"
+      )
 
       if (onRegister) {
         onRegister(data)
@@ -188,142 +256,297 @@ function Register({ onRegister, onBack }) {
   return (
     <div className="register-container">
 
+      <div className="register-background">
+        <div className="register-orb orb-one"></div>
+        <div className="register-orb orb-two"></div>
+        <div className="register-orb orb-three"></div>
+      </div>
+
       <div className="register-card">
 
-        <h1>🚀 Bienvenue sur Funia</h1>
+        <div className="register-logo">
+          🚀
+        </div>
 
-        <p>
-          Crée ton compte et commence à t'amuser !
-        </p>
+        <div className="register-header">
 
-        <form onSubmit={handleSubmit}>
+          <span className="register-badge">
+            ✨ FUNIA
+          </span>
 
-          <input
-            type="text"
-            name="username"
-            placeholder="Nom d'utilisateur"
-            value={form.username}
-            onChange={handleChange}
-            required
-            minLength={3}
-            maxLength={30}
-          />
+          <h1>
+            Crée ton compte
+          </h1>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+          <p>
+            Rejoins Funia et découvre un monde de
+            quiz, jeux et défis 🎮
+          </p>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={form.password}
-            onChange={handleChange}
-            required
-            minLength={6}
-          />
+        </div>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirmer le mot de passe"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-          />
+        <form
+          className="register-form"
+          onSubmit={handleSubmit}
+        >
 
-          <input
-            type="number"
-            name="age"
-            placeholder="Âge"
-            value={form.age}
-            onChange={handleChange}
-            min="5"
-            max="100"
-            required
-          />
+          <div className="form-section">
 
-          <select
-            name="country"
-            value={form.country}
-            onChange={handleChange}
-            required
-          >
+            <h2>
+              👤 Ton compte
+            </h2>
 
-            <option value="">
-              Choisir ton pays
-            </option>
+            <div className="input-group">
 
-            {COUNTRIES.map((country) => (
-              <option
-                key={country}
-                value={country}
+              <label htmlFor="username">
+                Nom d'utilisateur
+              </label>
+
+              <input
+                id="username"
+                type="text"
+                name="username"
+                placeholder="Ex : Ragnel"
+                value={form.username}
+                onChange={handleChange}
+                minLength={3}
+                maxLength={30}
+                autoComplete="username"
+                required
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label htmlFor="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="tonemail@example.com"
+                value={form.email}
+                onChange={handleChange}
+                autoComplete="email"
+                required
+              />
+
+            </div>
+
+            <div className="input-row">
+
+              <div className="input-group">
+
+                <label htmlFor="password">
+                  Mot de passe
+                </label>
+
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="6 caractères minimum"
+                  value={form.password}
+                  onChange={handleChange}
+                  minLength={6}
+                  maxLength={100}
+                  autoComplete="new-password"
+                  required
+                />
+
+              </div>
+
+              <div className="input-group">
+
+                <label htmlFor="confirmPassword">
+                  Confirmation
+                </label>
+
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirme ton mot de passe"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  maxLength={100}
+                  autoComplete="new-password"
+                  required
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="form-section">
+
+            <h2>
+              🌍 À propos de toi
+            </h2>
+
+            <div className="input-row">
+
+              <div className="input-group">
+
+                <label htmlFor="age">
+                  Âge
+                </label>
+
+                <input
+                  id="age"
+                  type="number"
+                  name="age"
+                  placeholder="Ton âge"
+                  value={form.age}
+                  onChange={handleChange}
+                  min="5"
+                  max="100"
+                  required
+                />
+
+              </div>
+
+              <div className="input-group">
+
+                <label htmlFor="country">
+                  Pays
+                </label>
+
+                <select
+                  id="country"
+                  name="country"
+                  value={form.country}
+                  onChange={handleChange}
+                  required
+                >
+
+                  <option value="">
+                    Choisir ton pays
+                  </option>
+
+                  {COUNTRIES.map((country) => (
+                    <option
+                      key={country}
+                      value={country}
+                    >
+                      {country}
+                    </option>
+                  ))}
+
+                </select>
+
+              </div>
+
+            </div>
+
+            <div className="input-group">
+
+              <label htmlFor="region">
+                Région / État
+                <span> facultatif</span>
+              </label>
+
+              <input
+                id="region"
+                type="text"
+                name="region"
+                placeholder="Ex : Lagos"
+                value={form.region}
+                onChange={handleChange}
+                maxLength={100}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label htmlFor="level">
+                Niveau scolaire
+                <span> facultatif</span>
+              </label>
+
+              <input
+                id="level"
+                type="text"
+                name="level"
+                placeholder="Ex : Bac C, Terminale..."
+                value={form.level}
+                onChange={handleChange}
+                maxLength={50}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label htmlFor="language">
+                Langue
+              </label>
+
+              <select
+                id="language"
+                name="language"
+                value={form.language}
+                onChange={handleChange}
               >
-                {country}
-              </option>
-            ))}
 
-          </select>
+                {LANGUAGES.map((language) => (
+                  <option
+                    key={language}
+                    value={language}
+                  >
+                    {language}
+                  </option>
+                ))}
 
-          <input
-            type="text"
-            name="region"
-            placeholder="Région / État"
-            value={form.region}
-            onChange={handleChange}
-            maxLength={100}
-          />
+              </select>
 
-          <input
-            type="text"
-            name="level"
-            placeholder="Niveau scolaire"
-            value={form.level}
-            onChange={handleChange}
-            maxLength={50}
-          />
+            </div>
 
-          <select
-            name="language"
-            value={form.language}
-            onChange={handleChange}
-          >
-
-            {LANGUAGES.map((language) => (
-              <option
-                key={language}
-                value={language}
-              >
-                {language}
-              </option>
-            ))}
-
-          </select>
+          </div>
 
           {error && (
-            <p className="error-message">
-              ❌ {error}
-            </p>
+            <div className="register-message error-message">
+              <span>❌</span>
+              <div>
+                {error.split("\n").map((message, index) => (
+                  <p key={index}>
+                    {message}
+                  </p>
+                ))}
+              </div>
+            </div>
           )}
 
           {success && (
-            <p className="success-message">
-              ✅ {success}
-            </p>
+            <div className="register-message success-message">
+              <span>✅</span>
+              <p>{success}</p>
+            </div>
           )}
 
           <button
             type="submit"
+            className="register-button"
             disabled={loading}
           >
-            {loading
-              ? "Création..."
-              : "Créer mon compte"}
+
+            {loading ? (
+              <>
+                <span className="loading-spinner"></span>
+                Création du compte...
+              </>
+            ) : (
+              <>
+                🚀 Créer mon compte
+              </>
+            )}
+
           </button>
 
         </form>
@@ -331,12 +554,18 @@ function Register({ onRegister, onBack }) {
         {onBack && (
           <button
             type="button"
-            onClick={onBack}
             className="back-button"
+            onClick={onBack}
+            disabled={loading}
           >
-            Retour
+            ← Retour
           </button>
         )}
+
+        <div className="register-footer">
+          <span>🔒</span>
+          Tes informations sont protégées.
+        </div>
 
       </div>
 

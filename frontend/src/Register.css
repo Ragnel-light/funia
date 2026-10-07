@@ -1,353 +1,591 @@
+/* ================================
+   FUNIA - REGISTER
+================================ */
 
-/* ========================================
-   FUNIA REGISTER
-======================================== */
-
-.register-page {
+.register-container {
   min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   display: flex;
-
-  align-items: center;
-
   justify-content: center;
+  align-items: center;
 
   padding: 40px 20px;
 
   background:
     radial-gradient(
-      circle at top left,
-      rgba(91, 92, 240, 0.12),
+      circle at 10% 20%,
+      rgba(124, 92, 255, 0.20),
       transparent 30%
     ),
     radial-gradient(
-      circle at bottom right,
-      rgba(219, 92, 155, 0.10),
-      transparent 28%
+      circle at 90% 80%,
+      rgba(0, 210, 255, 0.15),
+      transparent 30%
     ),
-    #f7f8fc;
+    linear-gradient(
+      135deg,
+      #090b18 0%,
+      #11152b 50%,
+      #090b18 100%
+    );
 
-  color: #202124;
+  box-sizing: border-box;
 }
 
 
-/* ========================================
+/* ================================
+   BACKGROUND
+================================ */
+
+.register-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.register-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.25;
+}
+
+.orb-one {
+  width: 280px;
+  height: 280px;
+  background: #7c5cff;
+  top: -100px;
+  left: -80px;
+}
+
+.orb-two {
+  width: 320px;
+  height: 320px;
+  background: #00d9ff;
+  bottom: -140px;
+  right: -100px;
+}
+
+.orb-three {
+  width: 180px;
+  height: 180px;
+  background: #ff4fd8;
+  top: 45%;
+  right: 15%;
+  opacity: 0.12;
+}
+
+
+/* ================================
    CARD
-======================================== */
+================================ */
 
 .register-card {
-  width: min(680px, 100%);
+  width: min(760px, 100%);
+
+  position: relative;
+  z-index: 1;
 
   padding: 42px;
 
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(17, 21, 43, 0.88);
 
-  border: 1px solid #e5e8ef;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 
   border-radius: 28px;
 
   box-shadow:
-    0 20px 55px rgba(0, 0, 0, 0.08);
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  animation: registerAppear 0.45s ease both;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-sizing: border-box;
 }
 
 
-/* ========================================
-   HEADER
-======================================== */
+/* ================================
+   LOGO
+================================ */
 
-.register-header {
-  text-align: center;
-
-  margin-bottom: 30px;
-}
-
-
-.register-icon {
+.register-logo {
   width: 68px;
   height: 68px;
 
   margin: 0 auto 18px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
+
+  font-size: 34px;
 
   border-radius: 20px;
 
   background:
     linear-gradient(
       135deg,
-      #5b5cf0,
-      #7c5cff,
-      #db5c9b
+      rgba(124, 92, 255, 0.25),
+      rgba(0, 217, 255, 0.15)
     );
 
-  font-size: 31px;
+  border: 1px solid rgba(124, 92, 255, 0.35);
 
   box-shadow:
-    0 12px 28px rgba(91, 92, 240, 0.18);
+    0 10px 30px rgba(124, 92, 255, 0.20);
 }
 
 
-.register-card h1 {
-  margin: 0;
+/* ================================
+   HEADER
+================================ */
 
-  font-size: clamp(28px, 5vw, 38px);
+.register-header {
+  text-align: center;
+  margin-bottom: 34px;
+}
 
-  line-height: 1.1;
+.register-badge {
+  display: inline-flex;
 
-  letter-spacing: -1.4px;
+  padding: 7px 14px;
+  margin-bottom: 14px;
+
+  border-radius: 999px;
+
+  color: #bcb0ff;
+
+  background: rgba(124, 92, 255, 0.10);
+
+  border: 1px solid rgba(124, 92, 255, 0.22);
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.register-header h1 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.register-header p {
+  max-width: 520px;
+
+  margin: 0 auto;
+
+  color: #aeb5d1;
+
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 
-.subtitle {
-  margin: 11px auto 0;
-
-  max-width: 500px;
-
-  color: #7a8393;
-
-  font-size: 14px;
-
-  line-height: 1.6;
-}
-
-
-/* ========================================
+/* ================================
    FORM
-======================================== */
+================================ */
 
-.register-card form {
+.register-form {
   display: flex;
-
   flex-direction: column;
-
-  gap: 14px;
+  gap: 26px;
 }
-
-
-/* ========================================
-   SECTION
-======================================== */
 
 .form-section {
-  display: flex;
+  padding: 24px;
 
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.form-section h2 {
+  margin: 0 0 20px;
+
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+
+/* ================================
+   INPUT LAYOUT
+================================ */
+
+.input-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
   flex-direction: column;
 
-  gap: 11px;
+  gap: 8px;
 
-  margin-top: 8px;
+  margin-bottom: 16px;
+}
 
-  padding: 20px;
+.input-group:last-child {
+  margin-bottom: 0;
+}
 
-  border: 1px solid #edf0f5;
+.input-group label {
+  color: #d9ddf0;
 
-  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
 
-  background: #fafbfe;
+.input-group label span {
+  color: #727a9d;
+  font-weight: 400;
 }
 
 
-.form-section h3 {
-  margin: 0 0 2px;
+/* ================================
+   INPUTS
+================================ */
 
-  color: #3b4250;
-
-  font-size: 14px;
-
-  font-weight: 800;
-}
-
-
-/* ========================================
-   INPUTS / SELECT
-======================================== */
-
-.register-card input,
-.register-card select {
+.input-group input,
+.input-group select {
   width: 100%;
+  height: 50px;
 
-  min-height: 48px;
+  padding: 0 15px;
 
-  padding: 13px 14px;
+  box-sizing: border-box;
 
-  border: 1px solid #dfe3eb;
+  color: #ffffff;
+
+  background: rgba(8, 11, 25, 0.75);
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
 
   border-radius: 13px;
 
   outline: none;
 
-  background: white;
-
-  color: #202124;
-
   font-family: inherit;
-
   font-size: 14px;
 
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
+    background 0.2s ease,
     transform 0.2s ease;
 }
 
-
-.register-card input::placeholder {
-  color: #9aa2b1;
+.input-group input::placeholder {
+  color: #626b8e;
 }
 
+.input-group select {
+  cursor: pointer;
+}
 
-.register-card input:focus,
-.register-card select:focus {
-  border-color: #7374f4;
+.input-group select option {
+  color: #ffffff;
+  background: #11152b;
+}
+
+.input-group input:hover,
+.input-group select:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #7c5cff;
+
+  background: rgba(12, 15, 32, 0.95);
 
   box-shadow:
-    0 0 0 4px rgba(91, 92, 240, 0.09);
+    0 0 0 3px rgba(124, 92, 255, 0.13),
+    0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 
-/* ========================================
-   SELECT
-======================================== */
+/* ================================
+   MESSAGES
+================================ */
 
-.register-card select {
-  cursor: pointer;
+.register-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 
-  appearance: auto;
-}
-
-
-/* ========================================
-   LANGUAGE HELP
-======================================== */
-
-.language-help {
-  margin: 0;
-
-  color: #858d9c;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-}
-
-
-/* ========================================
-   BUTTON
-======================================== */
-
-.register-card > form > button {
-  width: 100%;
-
-  min-height: 52px;
-
-  margin-top: 8px;
-
-  border: none;
+  padding: 15px 16px;
 
   border-radius: 14px;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  white-space: normal;
+}
+
+.register-message p {
+  margin: 0 0 4px;
+}
+
+.register-message p:last-child {
+  margin-bottom: 0;
+}
+
+.error-message {
+  color: #ffb8c2;
+
+  background: rgba(255, 70, 100, 0.08);
+
+  border: 1px solid rgba(255, 70, 100, 0.22);
+}
+
+.success-message {
+  color: #9ff5c5;
+
+  background: rgba(50, 220, 130, 0.08);
+
+  border: 1px solid rgba(50, 220, 130, 0.22);
+}
+
+
+/* ================================
+   MAIN BUTTON
+================================ */
+
+.register-button {
+  width: 100%;
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  border: none;
+  border-radius: 15px;
+
+  color: #ffffff;
 
   background:
     linear-gradient(
       135deg,
-      #5b5cf0,
-      #7c5cff
+      #7c5cff,
+      #5f43d9
     );
 
-  color: white;
-
   font-family: inherit;
-
   font-size: 15px;
-
-  font-weight: 800;
+  font-weight: 750;
 
   cursor: pointer;
 
   box-shadow:
-    0 12px 24px rgba(91, 92, 240, 0.18);
+    0 12px 30px rgba(124, 92, 255, 0.25);
 
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    opacity 0.2s ease;
+    filter 0.2s ease;
 }
 
-
-.register-card > form > button:hover:not(:disabled) {
+.register-button:hover:not(:disabled) {
   transform: translateY(-2px);
 
   box-shadow:
-    0 16px 30px rgba(91, 92, 240, 0.22);
+    0 16px 35px rgba(124, 92, 255, 0.35);
+
+  filter: brightness(1.08);
 }
 
-
-.register-card > form > button:active:not(:disabled) {
+.register-button:active:not(:disabled) {
   transform: translateY(0);
 }
 
-
-.register-card > form > button:disabled {
-  opacity: 0.55;
-
+.register-button:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
 
-/* ========================================
-   ANIMATION
-======================================== */
+/* ================================
+   LOADING
+================================ */
 
-@keyframes registerAppear {
+.loading-spinner {
+  width: 17px;
+  height: 17px;
 
-  from {
-    opacity: 0;
+  border-radius: 50%;
 
-    transform: translateY(18px);
-  }
+  border: 2px solid rgba(255, 255, 255, 0.30);
+  border-top-color: #ffffff;
 
+  animation: register-spin 0.7s linear infinite;
+}
+
+@keyframes register-spin {
   to {
-    opacity: 1;
-
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
-
 }
 
 
-/* ========================================
+/* ================================
+   BACK BUTTON
+================================ */
+
+.back-button {
+  width: 100%;
+
+  margin-top: 14px;
+
+  padding: 13px;
+
+  border-radius: 13px;
+
+  color: #aeb5d1;
+
+  background: transparent;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.back-button:hover:not(:disabled) {
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ================================
+   FOOTER
+================================ */
+
+.register-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 22px;
+
+  color: #69718f;
+
+  font-size: 12px;
+}
+
+
+/* ================================
    RESPONSIVE
-======================================== */
+================================ */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
-  .register-page {
-    padding: 20px 14px;
+  .register-container {
+    align-items: flex-start;
+
+    padding: 20px 12px;
   }
 
-
   .register-card {
-    padding: 26px 18px;
+    padding: 28px 18px;
 
     border-radius: 22px;
   }
 
-
-  .register-icon {
+  .register-logo {
     width: 58px;
     height: 58px;
 
-    font-size: 27px;
+    font-size: 28px;
   }
 
+  .register-header {
+    margin-bottom: 26px;
+  }
+
+  .register-header h1 {
+    font-size: 28px;
+  }
+
+  .register-header p {
+    font-size: 14px;
+  }
 
   .form-section {
-    padding: 16px;
+    padding: 18px;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
   }
 
 }
 
+@media (max-width: 420px) {
+
+  .register-container {
+    padding: 12px 8px;
+  }
+
+  .register-card {
+    padding: 24px 14px;
+
+    border-radius: 19px;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
+  .register-header h1 {
+    font-size: 25px;
+  }
+
+  .input-group input,
+  .input-group select {
+    height: 48px;
+  }
+
+}
