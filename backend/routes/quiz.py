@@ -1,10 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from database import SessionLocal
 from models.quiz import Question
 from pydantic import BaseModel
 from sqlalchemy.sql.expression import func
 
+from routes.auth import get_current_user
+
+
 router = APIRouter()
+
 
 class QuizAnswers(BaseModel):
     answers: dict[str, str]
@@ -20,88 +24,132 @@ def get_quiz(
 ):
     db = SessionLocal()
 
-    query = db.query(Question)
+    try:
+        # Limite de sécurité
+        if number < 1:
+            number = 1
 
-    if category != "all":
-        query = query.filter(Question.category == category)
+        if number > 50:
+            number = 50
 
-    if difficulty != "all":
-        query = query.filter(Question.difficulty == difficulty)
+        query = db.query(Question)
 
-    if country != "all":
-        query = query.filter(
-            (Question.country == country) |
-            (Question.country == "all")
+        if category != "all":
+            query = query.filter(
+                Question.category == category
+            )
+
+        if difficulty != "all":
+            query = query.filter(
+                Question.difficulty == difficulty
+            )
+
+        if country != "all":
+            query = query.filter(
+                (Question.country == country) |
+                (Question.country == "all")
+            )
+
+        if level != "all":
+            query = query.filter(
+                (Question.level == level) |
+                (Question.level == "all")
+            )
+
+        questions = (
+            query
+            .order_by(func.random())
+            .limit(number)
+            .all()
         )
 
-    if level != "all":
-        query = query.filter(
-            (Question.level == level) |
-            (Question.level == "all")
-        )
+        result = []
 
-    questions = query.order_by(func.random()).limit(number).all()
+        for q in questions:
+            result.append({
+                "id": q.id,
+                "question": q.question,
+                "options": {
+                    "A": q.option_a,
+                    "B": q.option_b,
+                    "C": q.option_c,
+                    "D": q.option_d
+                },
+                "category": q.category,
+                "difficulty": q.difficulty
+            })
 
-    result = []
+        return {
+            "number": len(result),
+            "questions": result
+        }
 
-    for q in questions:
-        result.append({
-            "id": q.id,
-            "question": q.question,
-            "options": {
-                "A": q.option_a,
-                "B": q.option_b,
-                "C": q.option_c,
-                "D": q.option_d
-            },
-            "category": q.category,
-            "difficulty": q.difficulty
-        })
+    finally:
+        db.close()
 
-    db.close()
 
-    return {
-        "number": len(result),
-        "questions": result
-    }
 @router.post("/quiz/check")
-def check_quiz(data: QuizAnswers):
+def check_quiz(
+    data: QuizAnswers,
+    current_user_id: int = Depends(get_current_user)
+):
     db = SessionLocal()
 
-    answers = data.answers
-    score = 0
-    corrections = []
+    try:
+        answers = data.answers
 
-    for question_id, user_answer in answers.items():
+        score = 0
+        corrections = []
 
-        question = db.query(Question).filter(
-            Question.id == int(question_id)
-        ).first()
+        # Limite du nombre de réponses
+        if len(answers) > 50:
+            answers = dict(list(answers.items())[:50])
 
-        if not question:
-            continue
+        for question_id, user_answer in answers.items():
 
-        correct = question.correct_answer
+            # Vérification de l'identifiant
+            try:
+                question_id_int = int(question_id)
+            except ValueError:
+                continue
 
-        if user_answer.upper() == correct.upper():
-            score += 1
-            correct_result = True
-        else:
-            correct_result = False
+            question = (
+                db.query(Question)
+                .filter(Question.id == question_id_int)
+                .first()
+            )
 
-        corrections.append({
-            "question_id": question.id,
-            "question": question.question,
-            "your_answer": user_answer,
-            "correct_answer": correct,
-            "correct": correct_result,
-            "explanation": question.explanation
-        })
+            if not question:
+                continue
 
-    db.close()
+            # Vérification de la réponse
+            if not isinstance(user_answer, str):
+                user_answer = ""
 
-    return {
-        "score": score,
-        "total": len(corrections),
-        "corrections": corrections
-    }
+            user_answer = user_answer.strip().upper()
+            correct_answer = question.correct_answer.strip().upper()
+
+            if user_answer == correct_answer:
+                score += 1
+                correct_result = True
+            else:
+                correct_result = False
+
+            corrections.append({
+                "question_id": question.id,
+                "question": question.question,
+                "your_answer": user_answer,
+                "correct_answer": correct_answer,
+                "correct": correct_result,
+                "explanation": question.explanation
+            })
+
+        return {
+            "user_id": current_user_id,
+            "score": score,
+            "total": len(corrections),
+            "corrections": corrections
+        }
+
+    finally:
+        db.close()
