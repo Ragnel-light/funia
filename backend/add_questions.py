@@ -1,5 +1,8 @@
-from database import SessionLocal
+from database import Base, engine, SessionLocal
 from models.quiz import Question
+
+# Crée les tables si elles n'existent pas encore
+Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
 
@@ -178,25 +181,31 @@ questions = [
     }
 ]
 
-for q in questions:
+try:
+    existing_count = db.query(Question).count()
 
-    question = Question(
-        question=q["question"],
-        option_a=q["a"],
-        option_b=q["b"],
-        option_c=q["c"],
-        option_d=q["d"],
-        correct_answer=q["correct"],
-        explanation=q["explanation"],
-        category=q["category"],
-        difficulty=q["difficulty"],
-        country=q["country"],
-        level=q["level"]
-    )
+    if existing_count > 0:
+        print(f"{existing_count} questions already exist. Nothing added.")
+    else:
+        for q in questions:
+            question = Question(
+                question=q["question"],
+                option_a=q["a"],
+                option_b=q["b"],
+                option_c=q["c"],
+                option_d=q["d"],
+                correct_answer=q["correct"],
+                explanation=q["explanation"],
+                category=q["category"],
+                difficulty=q["difficulty"],
+                country=q["country"],
+                level=q["level"]
+            )
 
-    db.add(question)
+            db.add(question)
 
-db.commit()
-db.close()
+        db.commit()
+        print("12 questions added successfully!")
 
-print("12 questions added!")
+finally:
+    db.close()
