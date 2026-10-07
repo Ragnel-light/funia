@@ -2,133 +2,188 @@ import { useEffect, useState } from "react"
 import "./Profile.css"
 
 function Profile({ onBack }) {
+
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
-  const userId = localStorage.getItem("user_id")
+  useEffect(() => {
 
-  async function loadProfile() {
-    if (!userId) {
-      setError("Utilisateur non connecté.")
-      setLoading(false)
-      return
-    }
+    async function loadProfile() {
 
-    try {
-      setLoading(true)
+      const token = localStorage.getItem("access_token")
 
-      const res = await fetch(`https://funia.onrender.com/users/${userId}`)
-
-      if (!res.ok) {
-        throw new Error(`Erreur serveur : ${res.status}`)
+      if (!token) {
+        setError("Tu dois être connecté.")
+        setLoading(false)
+        return
       }
 
-      const data = await res.json()
-      console.log("Profil mis à jour :", data)
+      try {
 
-      setUser(data)
-      setError("")
-    } catch (err) {
-      console.error("Erreur Profile :", err)
-      setError("Impossible de charger le profil.")
-    } finally {
-      setLoading(false)
+        const response = await fetch(
+          "https://funia.onrender.com/users/me",
+          {
+            method: "GET",
+
+            headers: {
+              "Accept": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        )
+
+        if (response.status === 401) {
+
+          localStorage.removeItem("access_token")
+          localStorage.removeItem("user_id")
+
+          setError("Session expirée. Reconnecte-toi.")
+          setLoading(false)
+
+          return
+        }
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(
+            data.detail || "Impossible de charger le profil."
+          )
+        }
+
+        setUser(data)
+
+      } catch (error) {
+
+        setError(
+          error.message ||
+          "Impossible de contacter le serveur."
+        )
+
+      } finally {
+
+        setLoading(false)
+
+      }
     }
-  }
 
-  useEffect(() => {
     loadProfile()
-  }, [userId])
+
+  }, [])
 
   if (loading) {
     return (
-      <div className="loading-profile">
-        Chargement...
+      <div className="profile-container">
+        <h2>Chargement du profil...</h2>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="loading-profile">
-        <h2>{error}</h2>
-        <button onClick={onBack}>← Retour</button>
+      <div className="profile-container">
+
+        <h2>❌ {error}</h2>
+
+        {onBack && (
+          <button onClick={onBack}>
+            Retour
+          </button>
+        )}
+
       </div>
     )
   }
 
   if (!user) {
-    return (
-      <div className="loading-profile">
-        Aucun utilisateur trouvé.
-      </div>
-    )
+    return null
   }
 
-  const level = Math.floor(user.xp / 100) + 1
-  const progress = user.xp % 100
-
   return (
-    <div className="profile-page">
-      <header className="profile-navbar">
-        <button onClick={onBack}>← Retour</button>
-        <h2>FUNIA 👤</h2>
-      </header>
+    <div className="profile-container">
 
-      <main className="profile-container">
-        <div className="profile-card">
-          <div className="avatar">
-            {user.username[0].toUpperCase()}
-          </div>
+      <div className="profile-card">
 
-          <h1>{user.username}</h1>
+        <h1>👤 {user.username}</h1>
+
+        <div className="profile-info">
 
           <p>
-            {user.country} • {user.level}
+            <strong>Email :</strong>{" "}
+            {user.email}
           </p>
 
-          <div className="xp-box">
-            <h2>Niveau {level}</h2>
+          <p>
+            <strong>Âge :</strong>{" "}
+            {user.age}
+          </p>
 
-            <div className="progress">
-              <div
-                className="fill"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+          <p>
+            <strong>Pays :</strong>{" "}
+            {user.country}
+          </p>
 
-            <span>{user.xp} XP</span>
-          </div>
+          <p>
+            <strong>Région :</strong>{" "}
+            {user.region || "Non renseignée"}
+          </p>
+
+          <p>
+            <strong>Niveau :</strong>{" "}
+            {user.level || "Non renseigné"}
+          </p>
+
         </div>
 
-        <div className="stats-grid">
-          <div className="stat">
-            <h3>🏆 XP</h3>
-            <p>{user.xp}</p>
+        <div className="profile-stats">
+
+          <div>
+            <span>⭐</span>
+            <strong>{user.xp}</strong>
+            <small>XP</small>
           </div>
 
-          <div className="stat">
-            <h3>🪙 Coins</h3>
-            <p>{user.coins}</p>
+          <div>
+            <span>🪙</span>
+            <strong>{user.coins}</strong>
+            <small>Coins</small>
           </div>
 
-          <div className="stat">
-            <h3>🎯 Quiz</h3>
-            <p>{user.quizzes_played}</p>
+          <div>
+            <span>🏆</span>
+            <strong>{user.level_number}</strong>
+            <small>Niveau</small>
           </div>
 
-          <div className="stat">
-            <h3>🎮 Jeux</h3>
-            <p>{user.games_played}</p>
+          <div>
+            <span>🧠</span>
+            <strong>{user.quizzes_played}</strong>
+            <small>Quiz</small>
           </div>
 
-          <div className="stat full">
-            <h3>🥇 Meilleur score</h3>
-            <p>{user.best_quiz_score}</p>
+          <div>
+            <span>🎮</span>
+            <strong>{user.games_played}</strong>
+            <small>Jeux</small>
           </div>
+
+          <div>
+            <span>🥇</span>
+            <strong>{user.best_quiz_score}</strong>
+            <small>Meilleur score</small>
+          </div>
+
         </div>
-      </main>
+
+        {onBack && (
+          <button onClick={onBack}>
+            Retour
+          </button>
+        )}
+
+      </div>
+
     </div>
   )
 }

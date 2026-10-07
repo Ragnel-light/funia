@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react"
 import "./QuizGame.css"
 
@@ -53,25 +52,15 @@ function QuizGame({
   async function loadQuestions() {
 
     setLoadingError("")
-
     setQuestions([])
-
     setCurrentQuestion(0)
-
     setSelectedAnswer(null)
-
     setScore(0)
-
     setAnswered(false)
-
     setFinished(false)
-
     setHint("")
-
     setHintError("")
-
     setTranslated(false)
-
 
     const count =
       Math.min(
@@ -79,26 +68,21 @@ function QuizGame({
         50
       )
 
-
     const selectedSubject =
       subject || "general"
 
-
     const selectedDifficulty =
       difficulty || "medium"
-
 
     const selectedLanguage =
       language ||
       localStorage.getItem("language") ||
       "Français"
 
-
     const selectedCountry =
       country ||
       localStorage.getItem("country") ||
       ""
-
 
     try {
 
@@ -122,16 +106,13 @@ function QuizGame({
 
         })
 
-
       const response =
         await fetch(
           `https://funia.onrender.com/trivia/questions?${params.toString()}`
         )
 
-
       const data =
         await response.json()
-
 
       if (!response.ok) {
 
@@ -142,7 +123,6 @@ function QuizGame({
 
       }
 
-
       if (!data.questions?.length) {
 
         throw new Error(
@@ -151,16 +131,13 @@ function QuizGame({
 
       }
 
-
       setQuestions(
         data.questions
       )
 
-
       setTranslated(
         Boolean(data.translated)
       )
-
 
     } catch (error) {
 
@@ -168,7 +145,6 @@ function QuizGame({
         "Erreur chargement quiz :",
         error
       )
-
 
       setLoadingError(
         error.message ||
@@ -206,16 +182,12 @@ function QuizGame({
     const question =
       questions[currentQuestion]
 
-
     if (!question || hintLoading) {
       return
     }
 
-
     setHintLoading(true)
-
     setHintError("")
-
 
     try {
 
@@ -244,10 +216,8 @@ function QuizGame({
           }
         )
 
-
       const data =
         await response.json()
-
 
       if (!response.ok) {
 
@@ -258,12 +228,10 @@ function QuizGame({
 
       }
 
-
       setHint(
         data.hint ||
         "Réfléchis aux notions principales de cette question. 💡"
       )
-
 
     } catch (error) {
 
@@ -272,11 +240,9 @@ function QuizGame({
         error
       )
 
-
       setHintError(
         "Impossible d'obtenir un indice pour le moment."
       )
-
 
     } finally {
 
@@ -297,20 +263,16 @@ function QuizGame({
       return
     }
 
-
     const question =
       questions[currentQuestion]
-
 
     if (!question) {
       return
     }
 
-
     setSelectedAnswer(index)
 
     setAnswered(true)
-
 
     if (
       index ===
@@ -331,17 +293,12 @@ function QuizGame({
   // SAUVEGARDE SCORE
   // ========================================
 
-  async function saveQuizResult(
-    finalScore
-  ) {
+  async function saveQuizResult(finalScore) {
 
-    const userId =
-      localStorage.getItem(
-        "user_id"
-      )
+    const token =
+      localStorage.getItem("access_token")
 
-
-    if (!userId) {
+    if (!token) {
 
       console.error(
         "Utilisateur non connecté."
@@ -350,41 +307,62 @@ function QuizGame({
       return null
     }
 
-
-    const xpEarned =
-      finalScore * 10
-
-
     try {
 
       const response =
         await fetch(
-          `https://funia.onrender.com/users/${userId}/quiz-result?score=${finalScore}&xp=${xpEarned}`,
+          `https://funia.onrender.com/users/me/quiz-result?score=${encodeURIComponent(finalScore)}`,
           {
-            method:
-              "POST"
+            method: "POST",
+
+            headers: {
+              "Accept": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
           }
         )
 
+      if (response.status === 401) {
+
+        localStorage.removeItem(
+          "access_token"
+        )
+
+        localStorage.removeItem(
+          "user_id"
+        )
+
+        throw new Error(
+          "Session expirée."
+        )
+      }
+
+      const data =
+        await response
+          .json()
+          .catch(() => null)
 
       if (!response.ok) {
 
-        const errorData =
-          await response
-            .json()
-            .catch(() => null)
-
-
         throw new Error(
-          errorData?.detail ||
+          data?.detail ||
           "Impossible d'enregistrer le résultat."
         )
 
       }
 
+      // Les récompenses viennent maintenant du serveur.
+      localStorage.setItem(
+        "xp",
+        String(data.xp)
+      )
 
-      return await response.json()
+      localStorage.setItem(
+        "level",
+        String(data.level)
+      )
 
+      return data
 
     } catch (error) {
 
@@ -393,11 +371,8 @@ function QuizGame({
         error
       )
 
-
       return null
-
     }
-
   }
 
 
@@ -411,20 +386,16 @@ function QuizGame({
       return
     }
 
-
     const question =
       questions[currentQuestion]
-
 
     if (!question) {
       return
     }
 
-
     const lastAnswerCorrect =
       selectedAnswer ===
       question.correct
-
 
     if (
       currentQuestion >=
@@ -439,28 +410,23 @@ function QuizGame({
             : 0
         )
 
-
       await saveQuizResult(
         finalScore
       )
 
-
       setScore(
         finalScore
       )
-
 
       setFinished(true)
 
       return
     }
 
-
     setCurrentQuestion(
       previous =>
         previous + 1
     )
-
 
     setSelectedAnswer(null)
 
@@ -500,11 +466,9 @@ function QuizGame({
             🧠
           </div>
 
-
           <h2>
             Préparation du quiz...
           </h2>
-
 
           <p>
 
@@ -513,7 +477,6 @@ function QuizGame({
               : "Funia prépare les questions dans ta langue 🌍"}
 
           </p>
-
 
           {loadingError && (
 
@@ -554,18 +517,15 @@ function QuizGame({
             ← Quiz
           </button>
 
-
           <div className="quiz-game-logo">
             FUNIA 🎮
           </div>
-
 
           <div className="quiz-game-score">
             🏆 {score} / {questions.length}
           </div>
 
         </header>
-
 
         <main className="quiz-result">
 
@@ -579,11 +539,9 @@ function QuizGame({
 
           </div>
 
-
           <p className="result-label">
             QUIZ TERMINÉ
           </p>
-
 
           <h1>
 
@@ -595,16 +553,13 @@ function QuizGame({
 
           </h1>
 
-
           <div className="result-score">
             {score} / {questions.length}
           </div>
 
-
           <p className="result-message">
             Tu gagnes {score * 10} XP ⭐
           </p>
-
 
           <div className="result-actions">
 
@@ -615,7 +570,6 @@ function QuizGame({
               🔄 Nouveau quiz
             </button>
 
-
             <button
               className="result-back-button"
               onClick={onFinish}
@@ -624,7 +578,6 @@ function QuizGame({
             </button>
 
           </div>
-
 
           <p
             style={{
@@ -654,7 +607,6 @@ function QuizGame({
   const question =
     questions[currentQuestion]
 
-
   const progress =
     (
       (currentQuestion + 1) /
@@ -666,9 +618,6 @@ function QuizGame({
 
     <div className="quiz-game-page">
 
-
-      {/* NAVBAR */}
-
       <header className="quiz-game-navbar">
 
         <button
@@ -678,11 +627,9 @@ function QuizGame({
           ← Quitter
         </button>
 
-
         <div className="quiz-game-logo">
           FUNIA 🎮
         </div>
-
 
         <div className="quiz-game-score">
           🏆 {score} pts
@@ -690,11 +637,7 @@ function QuizGame({
 
       </header>
 
-
       <main className="quiz-game-content">
-
-
-        {/* INFOS */}
 
         <div className="quiz-info">
 
@@ -702,20 +645,15 @@ function QuizGame({
             {subject || "Quiz"}
           </span>
 
-
           <span>
             🌍 {language || "Français"}
           </span>
-
 
           <span>
             ⚡ {difficulty || "medium"}
           </span>
 
         </div>
-
-
-        {/* PROGRESSION */}
 
         <div className="progress-container">
 
@@ -731,7 +669,6 @@ function QuizGame({
 
           </div>
 
-
           <div className="progress-bar">
 
             <div
@@ -746,22 +683,15 @@ function QuizGame({
 
         </div>
 
-
-        {/* QUESTION */}
-
         <section className="question-card">
 
           <div className="question-number">
             QUESTION {currentQuestion + 1}
           </div>
 
-
           <h1>
             {question.question}
           </h1>
-
-
-          {/* INDICE */}
 
           <button
             type="button"
@@ -776,7 +706,6 @@ function QuizGame({
 
           </button>
 
-
           {hint && (
 
             <div className="ai-hint-box">
@@ -784,7 +713,6 @@ function QuizGame({
               <div className="ai-hint-title">
                 🤖 Indice Funia AI
               </div>
-
 
               <p>
                 {hint}
@@ -794,7 +722,6 @@ function QuizGame({
 
           )}
 
-
           {hintError && (
 
             <div className="ai-hint-error">
@@ -803,9 +730,6 @@ function QuizGame({
 
           )}
 
-
-          {/* REPONSES */}
-
           <div className="answers">
 
             {question.answers.map(
@@ -813,7 +737,6 @@ function QuizGame({
 
                 let className =
                   "answer-button"
-
 
                 if (answered) {
 
@@ -837,7 +760,6 @@ function QuizGame({
 
                 }
 
-
                 return (
 
                   <button
@@ -855,11 +777,9 @@ function QuizGame({
                       )}
                     </span>
 
-
                     <span className="answer-text">
                       {answer}
                     </span>
-
 
                     {answered &&
                       index ===
@@ -870,7 +790,6 @@ function QuizGame({
                         </span>
 
                     )}
-
 
                     {answered &&
                       index === selectedAnswer &&
@@ -890,9 +809,6 @@ function QuizGame({
             )}
 
           </div>
-
-
-          {/* EXPLICATION */}
 
           {answered && (
 
@@ -914,7 +830,6 @@ function QuizGame({
 
               </strong>
 
-
               <p>
                 💡 {question.explanation}
               </p>
@@ -922,9 +837,6 @@ function QuizGame({
             </div>
 
           )}
-
-
-          {/* SUIVANT */}
 
           {answered && (
 
@@ -943,7 +855,6 @@ function QuizGame({
           )}
 
         </section>
-
 
         <p
           style={{
@@ -964,4 +875,3 @@ function QuizGame({
 
 
 export default QuizGame
-
