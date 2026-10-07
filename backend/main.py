@@ -37,6 +37,7 @@ app = FastAPI(
 
 allowed_origins = [
     "https://funia-lyart.vercel.app",
+     "https://funia-eeap5hgyi-funia1.vercel.app",
 
     # Développement local
     "http://localhost:5173",
